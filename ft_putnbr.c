@@ -12,39 +12,57 @@
 
 #include "ft_printf.h"
 
-static int	print_digits(long num, int *total)
+static int	get_digits(long number, char *digits)
 {
-	int	written;
+	int	count;
 
-	if (num >= 10)
+	count = 0;
+	if (number == 0)
+		digits[count++] = '0';
+	while (number > 0)
 	{
-		if (print_digits(num / 10, total) == -1)
-			return (-1);
+		digits[count++] = (number % 10) + '0';
+		number /= 10;
 	}
-	written = ft_putchar((num % 10) + '0');
-	if (written == -1)
-		return (-1);
-	*total += written;
-	return (0);
+	return (count);
+}
+
+static int	print_digits(char *digits, int count)
+{
+	int	printed;
+
+	printed = 0;
+	while (count > 0)
+	{
+		count--;
+		if (ft_putchar(digits[count]) == -1)
+			return (-1);
+		printed++;
+	}
+	return (printed);
 }
 
 int	ft_putnbr(int n)
 {
-	long	num;
-	int		total;
-	int		written;
+	char	digits[11];
+	long	number;
+	int		digit_count;
+	int		printed;
 
-	num = n;
-	total = 0;
-	if (num < 0)
+	number = n;
+	digit_count = 0;
+	printed = 0;
+	if (number < 0)
 	{
-		written = ft_putchar('-');
-		if (written == -1)
+		if (ft_putchar('-') == -1)
 			return (-1);
-		total += written;
-		num = -num;
+		printed++;
+		number = -number;
 	}
-	if (print_digits(num, &total) == -1)
+	digit_count = get_digits(number, digits);
+	digit_count = print_digits(digits, digit_count);
+	if (digit_count == -1)
 		return (-1);
-	return (total);
+	printed += digit_count;
+	return (printed);
 }

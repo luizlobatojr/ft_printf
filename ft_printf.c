@@ -33,6 +33,17 @@ static int	handle_specifier(char spec, va_list args)
 	return (-1);
 }
 
+static int	handle_conversion(const char *format, int *index, va_list args)
+{
+	int	result;
+
+	if (format[*index + 1] == '\0')
+		return (-1);
+	result = handle_specifier(format[*index + 1], args);
+	*index += 2;
+	return (result);
+}
+
 static int	process_format(const char *format, va_list args)
 {
 	int	i;
@@ -44,17 +55,9 @@ static int	process_format(const char *format, va_list args)
 	while (format[i] != '\0')
 	{
 		if (format[i] == '%')
-		{
-			if (format[i + 1] == '\0')
-				return (-1);
-			ret = handle_specifier(format[i + 1], args);
-			i += 2;
-		}
+			ret = handle_conversion(format, &i, args);
 		else
-		{
-			ret = ft_putchar(format[i]);
-			i++;
-		}
+			ret = ft_putchar(format[i++]);
 		if (ret == -1)
 			return (-1);
 		total += ret;

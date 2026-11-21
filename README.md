@@ -41,15 +41,14 @@ adds that function's character count to the running total. The parser uses no
 heap allocation or output buffer; it writes each character directly with
 `write`.
 
-The conversion functions produce numbers by repeatedly dividing the value by
-the output base and storing each remainder in a fixed-size local character
-array. Since this produces digits in reverse order, the functions print the
-array from the last stored digit to the first. Signed decimal output first
-prints a minus sign for negative values and converts the magnitude using a
-`long`, which safely handles `INT_MIN`. Pointer output converts the address to
-`uintptr_t`, prints the `0x` prefix, and emits hexadecimal digits. Null strings
-and null pointers are represented as `(null)` and `(nil)` on the target
-platform.
+The decimal and hexadecimal conversion functions repeatedly divide the value
+by the output base and store each remainder in a fixed-size local character
+array. This collects digits in reverse order, so the functions print the array
+from the last stored digit to the first. Signed decimal output first prints a
+minus sign for negative values and converts the magnitude using a `long`, which
+safely handles `INT_MIN`. Pointer output converts the address to `uintptr_t`,
+prints the `0x` prefix, and emits hexadecimal digits. Null strings and null
+pointers are represented as `(null)` and `(nil)` on the target platform.
 
 The main data structures are the format string and the `va_list` provided by
 the C standard library, plus small fixed-size arrays used temporarily to
