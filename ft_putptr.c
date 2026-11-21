@@ -44,10 +44,7 @@ int	ft_putptr(void *ptr)
 	int	hex_len;
 
 	if (ptr == NULL)
-	{
-		prefix_len = ft_putstr("0x0");
-		return (prefix_len);
-	}
+		return (ft_putstr("(nil)"));
 	prefix_len = ft_putstr("0x");
 	if (prefix_len == -1)
 		return (-1);
