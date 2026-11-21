@@ -5,52 +5,72 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lubatist <lubatist@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/11/19 06:53:39 by lubatist          #+#    #+#             */
-/*   Updated: 2026/11/19 14:17:50 by lubatist         ###   ########.fr       */
+/*   Created: 2026/11/21 06:02:15 by lubatist          #+#    #+#             */
+/*   Updated: 2026/11/21 06:02:15 by lubatist         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "libft.h"
-#include <limits.h>
-#include <stdio.h>
+#include "ft_printf.h"
 
-/*int ft_printf(const char *format, ...)
+static int	handle_specifier(char spec, va_list args)
 {
-	return (0);
-}*/
+	if (spec == 'c')
+		return (ft_putchar(va_arg(args, int)));
+	if (spec == 's')
+		return (ft_putstr(va_arg(args, char *)));
+	if (spec == 'p')
+		return (ft_putptr(va_arg(args, void *)));
+	if (spec == 'd' || spec == 'i')
+		return (ft_putnbr(va_arg(args, int)));
+	if (spec == 'u')
+		return (ft_putunsigned(va_arg(args, unsigned int)));
+	if (spec == 'x')
+		return (ft_puthex(va_arg(args, unsigned int), 0));
+	if (spec == 'X')
+		return (ft_puthex(va_arg(args, unsigned int), 1));
+	if (spec == '%')
+		return (ft_putchar('%'));
+	return (-1);
+}
 
-int main(void)
+static int	process_format(const char *format, va_list args)
 {
-	int ret;
+	int	i;
+	int	total;
+	int	ret;
 
-	printf("--- 1. VALOR DE RETORNO ---\n");
-	ret = printf("Ola 42!\n");
-	printf("Bytes escritos: %d\n\n", ret);
+	i = 0;
+	total = 0;
+	while (format[i] != '\0')
+	{
+		if (format[i] == '%')
+		{
+			if (format[i + 1] == '\0')
+				return (-1);
+			ret = handle_specifier(format[i + 1], args);
+			i += 2;
+		}
+		else
+		{
+			ret = ft_putchar(format[i]);
+			i++;
+		}
+		if (ret == -1)
+			return (-1);
+		total += ret;
+	}
+	return (total);
+}
 
-	/*printf("--- 2. %%s COM NULL ---\n");
-	ret = printf("String nula: [%s]\n", (char *)NULL);
-	printf("Bytes escritos: %d\n\n", ret);*/
+int	ft_printf(const char *format, ...)
+{
+	va_list	args;
+	int		total;
 
-	printf("--- 3. %%p COM NULL ---\n");
-	ret = printf("Ponteiro nulo: [%p]\n", NULL);
-	printf("Bytes escritos: %d\n\n", ret);
-
-	printf("--- 4. %%d COM INT_MIN ---\n");
-	ret = printf("INT_MIN: [%d]\n", INT_MIN);
-	printf("Bytes escritos: %d\n\n", ret);
-
-	printf("--- 5. %%x COM 0 ---\n");
-	ret = printf("Hex zero: [%x]\n", 0);
-	printf("Bytes escritos: %d\n\n", ret);
-
-	printf("--- 6. %%u COM NUMERO NEGATIVO ---\n");
-	ret = printf("Unsigned -1: [%u]\n", -1);
-	printf("Bytes escritos: %d\n\n", ret);
-
-	/*
-	printf("--- 7. %% NO FIM DA STRING ---\n");
-	ret = printf("Percentagem sozinha: %");
-	printf("\nBytes escritos: %d\n", ret);
-	*/
-	return (0);
+	if (!format)
+		return (-1);
+	va_start(args, format);
+	total = process_format(format, args);
+	va_end(args);
+	return (total);
 }
