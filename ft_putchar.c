@@ -5,19 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lubatist <lubatist@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/11/21 06:02:25 by lubatist          #+#    #+#             */
-/*   Updated: 2026/11/21 06:12:43 by lubatist         ###   ########.fr       */
+/*   Created: 2026/11/22 13:18:04 by lubatist          #+#    #+#             */
+/*   Updated: 2026/11/22 13:19:13 by lubatist         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_putchar(int c)
+int	ft_putchar(char c)
 {
-	unsigned char	ch;
-
-	ch = (unsigned char)c;
-	if (write(1, &ch, 1) != 1)
-		return (-1);
-	return (1);
+	return ((int)write(1, &c, 1));
 }
