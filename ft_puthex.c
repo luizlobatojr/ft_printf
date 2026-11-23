@@ -6,7 +6,7 @@
 /*   By: lubatist <lubatist@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/22 19:31:31 by lubatist          #+#    #+#             */
-/*   Updated: 2026/11/22 20:18:49 by lubatist         ###   ########.fr       */
+/*   Updated: 2026/11/23 15:02:34 by lubatist         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_puthex(unsigned int n, int lower)
 	{
 		return (ft_putbase(n, "0123456789abcdef", 16));
 	}
-	else 
+	else
 	{
 		return (ft_putbase(n, "0123456789ABCDEF", 16));
 	}

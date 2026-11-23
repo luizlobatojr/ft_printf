@@ -6,7 +6,7 @@
 /*   By: lubatist <lubatist@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/22 18:47:50 by lubatist          #+#    #+#             */
-/*   Updated: 2026/11/22 19:22:27 by lubatist         ###   ########.fr       */
+/*   Updated: 2026/11/23 15:11:15 by lubatist         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,19 @@
 
 int	ft_putunsigned(unsigned int n)
 {
-	long	nb;
 	int	count;
+	int	ret;
 
-	nb = n;
 	count = 0;
-	if(nb < 0)
+	if (n >= 10)
 	{
-		count += ft_putchar('-');
-			nb = -nb;
+		ret = ft_putunsigned(n / 10);
+		if (ret < 0)
+			return (-1);
+		count += ret;
 	}
-	if (nb >= 10)
-		count += ft_putnbr(nb / 10);
-	count += ft_putchar((nb % 10) + '0');
-	return (count);
+	ret = ft_putchar((n % 10) + '0');
+	if (ret < 0)
+		return (-1);
+	return (count + ret);
 }
